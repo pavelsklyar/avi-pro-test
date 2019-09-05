@@ -8,6 +8,9 @@ class GenerateController
         if ($length <= 0)
             return null;
 
+        if (!is_int($length))
+            return null;
+
         switch ($type) {
             case 'int':
                 $value = GenerateComponent::generateInt($length);

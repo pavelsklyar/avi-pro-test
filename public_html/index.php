@@ -34,8 +34,17 @@ function getPostData(ServerRequestInterface $request) {
 /* ========== О Б Р А Б О Т Ч И К И ========== */
 
 function generate(ServerRequestInterface $request, ResponseInterface $response) {
-    $type = getPostData($request)['type'];
-    $length = getPostData($request)['length'];
+    $post = getPostData($request);
+
+    $type = 'int';
+    $length = 5;
+
+    if (array_key_exists('type', $post)) {
+        $type = Security::protectData($post['type']);
+    }
+    if (array_key_exists('length', $post)) {
+        $length = Security::protectData($post['length']);
+    }
 
     $data = GenerateController::generateValue($type, $length);
 
@@ -46,7 +55,7 @@ function generate(ServerRequestInterface $request, ResponseInterface $response) 
 }
 
 function retrieve(ServerRequestInterface $request, ResponseInterface $response) {
-    $id = getGetData($request)['id'];
+    $id = Security::protectData(getGetData($request)['id']);
 
     $data = RetrieveController::retrieve($id);
 
